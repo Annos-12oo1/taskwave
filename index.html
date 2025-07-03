@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskWave+</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>📋 TaskWave+</h1>
+      <button id="toggle-theme">🌓</button>
+    </header>
+
+    <div class="pomodoro-box">
+      <h2>🍅 Pomodoro Timer</h2>
+      <div id="timer">25:00</div>
+      <div class="timer-controls">
+        <button id="start-btn">▶️ Start</button>
+        <button id="pause-btn">⏸️ Pause</button>
+        <button id="reset-btn">🔄 Reset</button>
+      </div>
+    </div>
+
+    <form id="task-form">
+      <input type="text" id="task-title" placeholder="Task Title" required />
+      <input type="text" id="task-category" placeholder="Category" />
+      <select id="task-priority">
+        <option value="low">🛌 Low</option>
+        <option value="medium">⚠️ Medium</option>
+        <option value="high">🔥 High</option>
+      </select>
+      <input type="datetime-local" id="task-time" required />
+      <button type="submit">➕ Add Task</button>
+    </form>
+
+    <ul id="task-list"></ul>
+  </div>
+
+  <!-- Connect your JavaScript here -->
+  <script src="script.js"></script>
+</body>
+</html>

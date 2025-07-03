@@ -1,0 +1,194 @@
+/* Base styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+  background-color: #121212;
+  color: #f4f4f4;
+}
+
+/* App container centered */
+.app-container {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #6c5ce7;
+  margin: 0;
+}
+
+#toggle-theme {
+  font-size: 1.4rem;
+  background: transparent;
+  border: 2px solid #6c5ce7;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #6c5ce7;
+  transition: background 0.3s;
+}
+
+#toggle-theme:hover {
+  background-color: #6c5ce7;
+  color: #fff;
+}
+
+/* Pomodoro Timer Box */
+.pomodoro-box {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+body.dark .pomodoro-box {
+  background: #1e1e1e;
+}
+
+#timer {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #6c5ce7;
+  margin: 1rem 0;
+}
+
+.timer-controls button {
+  margin: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  background: #6c5ce7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.timer-controls button:hover {
+  background: #5a4ecf;
+}
+
+/* Task form */
+form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+form input,
+form select,
+form button {
+  padding: 0.75rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  flex: 1 1 45%;
+}
+
+form button {
+  background: #6c5ce7;
+  color: white;
+  border: none;
+  cursor: pointer;
+  flex: 1 1 100%;
+  transition: background 0.3s;
+}
+
+form button:hover {
+  background: #5a4ecf;
+}
+
+/* Task list */
+#task-list {
+  width: 100%;
+  max-width: 600px;
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  background: #fff;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-left: 6px solid #ccc;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+body.dark .task-item {
+  background: #1e1e1e;
+}
+
+.task-item.done {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.task-item.priority-high {
+  border-left-color: #e74c3c;
+}
+
+.task-item.priority-medium {
+  border-left-color: #f39c12;
+}
+
+.task-item.priority-low {
+  border-left-color: #2ecc71;
+}
+
+.task-info {
+  flex-grow: 1;
+}
+
+.task-controls button {
+  font-size: 1.1rem;
+  margin-left: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6c5ce7;
+}
+
+.task-controls button:hover {
+  color: #5a4ecf;
+}
+
+/* Responsive design */
+@media (max-width: 500px) {
+  form input,
+  form select,
+  form button {
+    flex: 1 1 100%;
+  }
+}
