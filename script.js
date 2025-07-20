@@ -22,24 +22,28 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="task-time">${new Date(task.time).toLocaleString()}</div>
         </div>
         <div class="task-controls">
-          <button onclick="toggleDone(${index})">✅</button>
-          <button onclick="deleteTask(${index})">🗑️</button>
+          <button class="done-btn">✅</button>
+          <button class="delete-btn">🗑️</button>
         </div>
       `;
+
+      const doneBtn = li.querySelector(".done-btn");
+      const deleteBtn = li.querySelector(".delete-btn");
+
+      doneBtn.addEventListener("click", () => {
+        tasks[index].done = !tasks[index].done;
+        saveTasks();
+        renderTasks();
+      });
+
+      deleteBtn.addEventListener("click", () => {
+        tasks.splice(index, 1);
+        saveTasks();
+        renderTasks();
+      });
+
       taskList.appendChild(li);
     });
-  };
-
-  const toggleDone = (i) => {
-    tasks[i].done = !tasks[i].done;
-    saveTasks();
-    renderTasks();
-  };
-
-  const deleteTask = (i) => {
-    tasks.splice(i, 1);
-    saveTasks();
-    renderTasks();
   };
 
   form.addEventListener('submit', (e) => {
@@ -51,78 +55,99 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!title || !time) return alert('Please fill in required fields.');
 
-    tasks.push({ title, category, priority, time, done: false });
+    tasks.push({ title, category, priority, time, done: false, reminded: false });
     saveTasks();
     renderTasks();
     form.reset();
   });
 
+  // Theme toggle + persist
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+  }
+
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
+    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
   });
 
+  // Alarm System
   const checkAlarms = () => {
-    const now = new Date().toISOString().slice(0, 16);
+    const now = new Date();
+
     tasks.forEach(task => {
-      if (!task.done && task.time === now) {
+      const taskTime = new Date(task.time);
+      const diff = Math.abs(taskTime - now);
+
+      if (!task.done && !task.reminded && diff <= 30000) {
         alert(`🔔 Reminder: ${task.title}`);
-        task.done = true;
+        task.reminded = true;
       }
     });
+
     saveTasks();
     renderTasks();
   };
 
-  setInterval(checkAlarms, 60000);
-  renderTasks();
+  setInterval(checkAlarms, 5000); // check every 5 seconds
 
-  // Pomodoro timer logic
-  let timerDisplay = document.getElementById("timer");
-  let startBtn = document.getElementById("start-btn");
-  let pauseBtn = document.getElementById("pause-btn");
-  let resetBtn = document.getElementById("reset-btn");
+  // Pomodoro timer
+ let timerDisplay = document.getElementById("timer");
+let startBtn = document.getElementById("start-btn");
+let pauseBtn = document.getElementById("pause-btn");
+let resetBtn = document.getElementById("reset-btn");
+let customMinutesInput = document.getElementById("custom-minutes");
 
-  let timer;
-  let timeLeft = 25 * 60;
-  let isRunning = false;
+let timer;
+let timeLeft = parseInt(customMinutesInput.value) * 60;
+let isRunning = false;
 
-  function updateTimerDisplay() {
-    let minutes = Math.floor(timeLeft / 60);
-    let seconds = timeLeft % 60;
-    timerDisplay.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+function updateTimerDisplay() {
+  let minutes = Math.floor(timeLeft / 60);
+  let seconds = timeLeft % 60;
+  timerDisplay.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function startTimer() {
+  if (!isRunning) {
+    isRunning = true;
+    timer = setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        updateTimerDisplay();
+      } else {
+        clearInterval(timer);
+        isRunning = false;
+        alert("🍅 Pomodoro complete!");
+      }
+    }, 1000);
   }
+}
 
-  function startTimer() {
-    if (!isRunning) {
-      isRunning = true;
-      timer = setInterval(() => {
-        if (timeLeft > 0) {
-          timeLeft--;
-          updateTimerDisplay();
-        } else {
-          clearInterval(timer);
-          isRunning = false;
-          alert("🍅 Pomodoro complete!");
-        }
-      }, 1000);
-    }
-  }
+function pauseTimer() {
+  clearInterval(timer);
+  isRunning = false;
+}
 
-  function pauseTimer() {
-    clearInterval(timer);
-    isRunning = false;
-  }
+function resetTimer() {
+  clearInterval(timer);
+  isRunning = false;
+  timeLeft = parseInt(customMinutesInput.value) * 60;
+  updateTimerDisplay();
+}
 
-  function resetTimer() {
-    clearInterval(timer);
-    timeLeft = 25 * 60;
-    isRunning = false;
+customMinutesInput.addEventListener("change", () => {
+  if (!isRunning) {
+    timeLeft = parseInt(customMinutesInput.value) * 60;
     updateTimerDisplay();
   }
+});
 
-  startBtn.addEventListener("click", startTimer);
-  pauseBtn.addEventListener("click", pauseTimer);
-  resetBtn.addEventListener("click", resetTimer);
+startBtn.addEventListener("click", startTimer);
+pauseBtn.addEventListener("click", pauseTimer);
+resetBtn.addEventListener("click", resetTimer);
 
-  updateTimerDisplay(); // Show initial time
+updateTimerDisplay();
+
+  renderTasks();
 });

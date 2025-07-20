@@ -15,7 +15,10 @@
 
     <div class="pomodoro-box">
       <h2>🍅 Pomodoro Timer</h2>
-      <div id="timer">25:00</div>
+<label for="custom-minutes">Set minutes:</label>
+<input type="number" id="custom-minutes" min="1" max="90" value="25" />
+<div id="timer">25:00</div>
+
       <div class="timer-controls">
         <button id="start-btn">▶️ Start</button>
         <button id="pause-btn">⏸️ Pause</button>
